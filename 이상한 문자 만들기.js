@@ -11,6 +11,7 @@ function solution(s) {
   let answer = '';
 
   const splitString = s.split(' ');
+  console.log(splitString);
 
   splitString.forEach((word, index) => {
     for (let i = 0; i < word.length; i++) {
@@ -28,3 +29,28 @@ function solution(s) {
 
 console.log(solution('try  hello world   '));
 console.log(solution('  hello javascript   '));
+
+// 조금 더 정석적인 방법
+// 사유 : 시간 복잡도 O(n)
+// function solution(s) {
+//   let isEven = true;
+//   let answer = '';
+
+//   for (let i = 0; i < s.length; i++) {
+//     let char = s[i];
+
+//     if (char === ' ') {
+//       answer += ' ';
+//       isEven = true;
+//     } else {
+//       if (isEven) {
+//         answer += char.toUpperCase();
+//       } else {
+//         answer += char.toLowerCase();
+//       }
+//       isEven = !isEven;
+//     }
+//   }
+
+//   return answer;
+// }
