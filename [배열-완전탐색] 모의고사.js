@@ -14,16 +14,32 @@
 // 문제의 정답은 1, 2, 3, 4, 5중 하나입니다.
 // 가장 높은 점수를 받은 사람이 여럿일 경우, return하는 값을 오름차순 정렬해주세요.
 
+// 수포자들의 패턴
 function solution(answers) {
+  let answer = [];
   const patterns = [
     [1, 2, 3, 4, 5],
     [2, 1, 2, 3, 2, 4, 2, 5],
     [3, 3, 1, 1, 2, 2, 4, 4, 5, 5],
   ];
 
+  // 수포자들의 점수를 저장할 배열
   let scores = [0, 0, 0];
 
-  let answer = [];
+  for (let [i, answer] of answers.entries()) {
+    for (let [j, pattern] of patterns.entries()) {
+      if (answer === pattern[i % pattern.length]) {
+        scores[j] += 1;
+      }
+    }
+  }
+
+  const hightestScore = Math.max(...scores);
+
+  for (let i = 0; i < scores.length; i++) {
+    if (scores[i] === hightestScore) answer.push(i + 1);
+  }
+
   return answer;
 }
 
