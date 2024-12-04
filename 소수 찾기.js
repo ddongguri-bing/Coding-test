@@ -7,6 +7,8 @@
 // 제한 조건
 // n은 2이상 1000000이하의 자연수입니다.
 
+// 에라토스테네스의 체
+
 function solution(n) {
   let answer = 0;
   let allNums = [];
