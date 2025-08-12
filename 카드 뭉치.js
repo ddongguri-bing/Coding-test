@@ -60,40 +60,110 @@
 // 위 코드에서 if (goal[i] === cards1[0] || cards2[0])는 앞의 조건이 false라면 뒤의 조건은 존재 자체만으로 true로 평가
 // 따라서 아래와 같이 조건을 제대로 비교해주면 해결 !
 
-function solution(cards1, cards2, goal) {
-  let answer = 'Yes';
+function solution1(cards1, cards2, goal) {
+  let answer = "Yes";
 
   for (let i = 0; i < goal.length; i++) {
     if (goal[i] === cards1[0] || goal[i] === cards2[0]) {
       if (goal[i] === cards1[0]) cards1.shift();
       else cards2.shift();
-      console.log(`cards1 : ${cards1} // cards2: ${cards2}`);
-    } else answer = 'No';
+    } else answer = "No";
   }
 
   return answer;
 }
 
+// Queue를 구현하여 풀이
+
+class Queue {
+  itmes = [];
+  front = 0;
+  rear = 0;
+
+  constructor(array) {
+    this.items = array;
+    this.rear = array.length;
+  }
+
+  push(item) {
+    this.items.push(item);
+    rear++;
+  }
+
+  pop() {
+    return this.items[this.front++];
+  }
+
+  first() {
+    return this.items[this.front];
+  }
+
+  isEmpty() {
+    return this.front === this.rear;
+  }
+}
+
+function solution2(cards1, cards2, goal) {
+  cards1 = new Queue(cards1);
+  cards2 = new Queue(cards2);
+  goal = new Queue(goal);
+
+  while (!goal.isEmpty()) {
+    if (!cards1.isEmpty() && cards1.first() === goal.first()) {
+      cards1.pop();
+      goal.pop();
+    } else if (!cards2.isEmpty() && cards2.first() === goal.first()) {
+      cards2.pop();
+      goal.pop();
+    } else break;
+  }
+  return goal.isEmpty() ? "Yes" : "No";
+}
+
 console.log(
-  solution(
-    ['i', 'drink', 'water'],
-    ['want', 'to'],
-    ['i', 'want', 'to', 'drink', 'water']
+  solution1(
+    ["i", "drink", "water"],
+    ["want", "to"],
+    ["i", "want", "to", "drink", "water"]
   )
 ); // "Yes"
 
 console.log(
-  solution(
-    ['i', 'water', 'drink'],
-    ['want', 'to'],
-    ['i', 'want', 'to', 'drink', 'water']
+  solution1(
+    ["i", "water", "drink"],
+    ["want", "to"],
+    ["i", "want", "to", "drink", "water"]
   )
 ); // "No"
 
 console.log(
-  solution(
-    ['i', 'water', 'drink'],
-    ['i', 'to'],
-    ['i', 'want', 'to', 'drink', 'water']
+  solution1(
+    ["i", "water", "drink"],
+    ["i", "to"],
+    ["i", "want", "to", "drink", "water"]
+  )
+); // "No"
+
+console.log(
+  solution2(
+    ["i", "drink", "water"],
+    ["want", "to"],
+    ["i", "want", "to", "drink", "water"]
+  )
+); // "Yes"
+
+console.log(
+  solution2(
+    ["i", "water", "drink"],
+    ["want", "to"],
+    ["i", "want", "to", "drink", "water"]
+  )
+); // "No"
+
+console.log(
+  solution2(
+    ["i", "water", "drink"],
+    ["i", "to"],
+    ["i", "want", "to", "drink", "water"]
   )
 ); // "No"
