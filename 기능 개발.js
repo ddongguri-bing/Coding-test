@@ -23,7 +23,7 @@ function solution(progresses, speeds) {
 
   // 배포될 작업의 수 카운드
   let count = 0;
-  // 현재 배포될 작업 중 가장 늦게 배포될 작업의 가능일
+  // 기준 배포일 저장
   let maxDay = duration[0];
 
   for (let i = 0; i < progresses.length; i++) {
