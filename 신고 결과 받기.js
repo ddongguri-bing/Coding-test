@@ -30,7 +30,6 @@ function solution(id_list, report, k) {
   }
 
   for (let user in reportNum) {
-    // console.log(reportNum[user]);
     if (reportNum[user] >= k) reportList.push(user);
   }
 
@@ -41,11 +40,6 @@ function solution(id_list, report, k) {
     });
     answer.push(count);
   }
-
-  // console.log(reportObj);
-  // console.log(reportNum);
-  // console.log(reportList);
-  // console.log(answer);
 
   return answer;
 }
