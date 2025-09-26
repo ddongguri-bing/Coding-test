@@ -15,9 +15,7 @@ function solution(numbers) {
     }
   }
 
-  answer = [...new Set(answer)].sort((a, b) => a - b);
-
-  return answer;
+  return [...new Set(answer)].sort((a, b) => a - b);
 }
 
 console.log(solution([2, 1, 3, 4, 1])); // [2,3,4,5,6,7]
