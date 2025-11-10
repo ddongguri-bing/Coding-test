@@ -20,27 +20,55 @@
 // 만약 실패율이 같은 스테이지가 있다면 작은 번호의 스테이지가 먼저 오도록 하면 된다.
 // 스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 으로 정의한다.
 
-function solution(N, stages) {
-  const challenger = new Array(N + 2).fill(0);
+// function solution(N, stages) {
+//   const challenger = new Array(N + 2).fill(0);
 
-  for (let stage of stages) {
-    challenger[stage] += 1;
+//   for (let stage of stages) {
+//     challenger[stage] += 1;
+//   }
+
+//   const fails = {};
+//   let total = stages.length;
+
+//   for (let i = 1; i <= N; i++) {
+//     if (challenger[i] === 0) {
+//       fails[i] = 0;
+//     }
+
+//     fails[i] = challenger[i] / total;
+//     total -= challenger[i];
+//   }
+
+//   const result = Object.entries(fails).sort((a, b) => b[1] - a[1]);
+//   return result.map((v) => Number(v[0]));
+// }
+
+function solution(N, stages) {
+  const challengers = new Array(N + 2).fill(0);
+  // 1. console.log(challengers);
+  for (const stage of stages) {
+    challengers[stage] += 1;
   }
+  // 2. console.log(challengers);
 
   const fails = {};
-  let total = stages.length;
+  let allPlayers = stages.length;
 
   for (let i = 1; i <= N; i++) {
-    if (challenger[i] === 0) {
+    if (challengers[i] === 0) {
       fails[i] = 0;
+      continue;
     }
 
-    fails[i] = challenger[i] / total;
-    total -= challenger[i];
+    fails[i] = challengers[i] / allPlayers;
+    allPlayers -= challengers[i];
   }
 
-  const result = Object.entries(fails).sort((a, b) => b[1] - a[1]);
-  return result.map((v) => Number(v[0]));
+  // 3. console.log(fails);
+
+  const sortedFails = Object.entries(fails).sort((a, b) => b[1] - a[1]);
+  // 4. console.log(sortedFails);
+  return sortedFails.map((e) => +e[0]);
 }
 
 console.log(solution(5, [2, 1, 2, 6, 2, 4, 3, 3])); // [3,4,2,1,5]
