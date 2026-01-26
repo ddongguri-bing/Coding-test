@@ -40,60 +40,49 @@
 // 입력으로 들어온 두 문자열의 자카드 유사도를 출력한다.
 // 유사도 값은 0에서 1 사이의 실수이므로, 이를 다루기 쉽도록 65536을 곱한 후에 소수점 아래를 버리고 정수부만 출력한다.
 
+const formatting = (str) => {
+  str = str.toLowerCase();
+
+  const array = [];
+  for (let i = 0; i < str.length - 1; i++) {
+    const pair = str.slice(i, i + 2);
+    if (/^[a-z]{2}$/.test(pair)) array.push(pair);
+  }
+
+  return array;
+};
+
+const countMap = (array) =>
+  array.reduce((map, value) => ((map[value] = (map[value] || 0) + 1), map), {});
+
+const jaccard_similarity = (intersection, union) =>
+  Math.floor((intersection / union) * 65536);
+
 function solution(str1, str2) {
-  // 문자열을 소문자로 변환, 두 글자씩 자른 뒤 해당 단어가 영문자 두 글자로 이루어져있는지 확인
-  const formatting = (str) => {
-    const array = [];
-    str = str.toLowerCase();
-    for (let i = 0; i < str.length - 1; i++) {
-      const pair = str.slice(i, i + 2);
-      // 정규표현식
-      // ^ : 문자열의 시작 | [a-z] : 알파벳 소문자 한 글자 | {2} : 그게 두 번 반복 | $ : 문자열의 끝
-      // 알파벳 소문자 2개로 이루어진 문자열만 filter
-      if (/^[a-z]{2}$/.test(pair)) array.push(pair);
-    }
-    return array;
-  };
+  const formatted_str1 = formatting(str1);
+  const formatted_str2 = formatting(str2);
 
-  // 영문자 쌍 갯수 count하여 객체로 반환
-  const countMap = (array) =>
-    array.reduce(
-      (map, value) => ((map[value] = (map[value] || 0) + 1), map),
-      {}
-    );
+  if (formatted_str1.length === 0 && formatted_str2.length === 0) return 65536;
 
-  const jaccardSimilarity = (intersection, union) =>
-    Math.floor((intersection / union) * 65536);
+  const object_set1 = countMap(formatted_str1);
+  const object_set2 = countMap(formatted_str2);
 
-  const filteredSet1 = formatting(str1);
-  const filteredSet2 = formatting(str2);
-
-  // 유효성 검사를 통과한 두 배열이 모두 공집합이라면 바로 65536 return
-  if (filteredSet1.length === 0 && filteredSet2.length === 0) return 65536;
-
-  const set1Object = countMap(filteredSet1);
-  const set2Object = countMap(filteredSet2);
-
-  // 각 키 별로 공통으로 등장한 최소 개수의 합
   let intersection = 0;
-  // 각 키 별로 두 객체 중에 더 많이 등장한 개수의 합
   let union = 0;
 
-  // 전체 key 값을 모아
-  const allKeys = new Set([
-    ...Object.keys(set1Object),
-    ...Object.keys(set2Object),
+  const all_keys = new Set([
+    ...Object.keys(object_set1),
+    ...Object.keys(object_set2),
   ]);
 
-  // 전체 key를 기준으로 교집합과 합집합 계산
-  for (const key of allKeys) {
-    const count1 = set1Object[key] || 0;
-    const count2 = set2Object[key] || 0;
+  for (const key of all_keys) {
+    const count1 = object_set1[key] || 0;
+    const count2 = object_set2[key] || 0;
     intersection += Math.min(count1, count2);
     union += Math.max(count1, count2);
   }
 
-  return jaccardSimilarity(intersection, union);
+  return jaccard_similarity(intersection, union);
 }
 
 console.log(solution("FRANCE", "french")); // 16384
