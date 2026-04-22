@@ -1,6 +1,6 @@
 function solution(order) {
   let order_idx = 0;
-  const sub_container = [];
+  const sub_conveyor = [];
 
   let answer = 0;
 
@@ -9,14 +9,14 @@ function solution(order) {
       answer++;
       order_idx++;
     } else {
-      sub_container.push(i + 1);
+      sub_conveyor.push(i + 1);
     }
 
     while (
-      sub_container.length > 0 &&
-      sub_container[sub_container.length - 1] === order[order_idx]
+      sub_conveyor.length > 0 &&
+      sub_conveyor[sub_conveyor.length - 1] === order[order_idx]
     ) {
-      sub_container.pop();
+      sub_conveyor.pop();
       answer++;
       order_idx++;
     }
